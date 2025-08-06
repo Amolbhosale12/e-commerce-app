@@ -4,11 +4,11 @@ spring:
   data:
     mongodb:
       username: root
-      password: password
+      password: amb123
       host: localhost
       port: 27017
       database: customerdb
       authentication-database: admin
 
 server:
-  port: 8091
+  port: 8092

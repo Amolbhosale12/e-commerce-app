@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class GlobalException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResultDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResultDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         HashMap<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error ->
                 errors.put(error.getObjectName(), error.getDefaultMessage())
@@ -24,7 +24,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ResultDTO> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+    public ResultDTO handleCategoryNotFoundException(CategoryNotFoundException ex) {
         log.error("exception is :: "+ex.getMessage());
         return ResultBuilder.error(ex.getMessage());
     }

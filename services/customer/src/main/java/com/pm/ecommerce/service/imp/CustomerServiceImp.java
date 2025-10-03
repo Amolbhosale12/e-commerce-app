@@ -13,8 +13,6 @@ import com.pm.ecommerce.repository.CustomerRepository;
 import com.pm.ecommerce.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,113 +69,89 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<ResultDTO> create(CustomerRequest customerRequest) {
+    public ResultDTO create(CustomerRequest customerRequest) {
 
         //check duplication
         try {
             boolean response = customerRepository.existsByEmail(customerRequest.getEmail());
             if (response) {
                 log.info("Customer already exists");
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(ResultBuilder.failure(Constants.EMAIL_ALREADY_EXIST.toString()));
+                return ResultBuilder.failure(Constants.EMAIL_ALREADY_EXIST.toString());
             }
             customerRepository.save(toCustomer(customerRequest));
             log.info("customer created");
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(ResultBuilder.success(Constants.CUSTOMER_CREATED.toString()));
+            return ResultBuilder.success(Constants.CUSTOMER_CREATED.toString());
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResultBuilder.failure(e.getMessage()));
+            return ResultBuilder.failure(e.getMessage());
         }
 
     }
 
     @Override
-    public ResponseEntity<ResultDTO> update(String id, CustomerRequest customerRequest) {
+    public ResultDTO update(String id, CustomerRequest customerRequest) {
         try {
             Optional<Customer> customer = customerRepository.findById(id);
             if (customer.isEmpty()) {
                 log.info("customer not found");
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.getValue()));
+                return ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.getValue());
             }
             customerRepository.save(toCustomer(customerRequest));
             log.info("customer updated");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ResultBuilder.success(Constants.CUSTOMER_UPDATED.toString()));
+            return ResultBuilder.success(Constants.CUSTOMER_UPDATED.toString());
 
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResultBuilder.failure(e.getMessage()));
+            return ResultBuilder.failure(e.getMessage());
         }
     }
 
     @Override
-    public ResponseEntity<ResultDTO> delete(String id) {
+    public ResultDTO delete(String id) {
         try {
             Optional<Customer> customer = customerRepository.findById(id);
             if (customer.isEmpty()) {
                 log.info("Customer not found with id {}", id);
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString()));
+                return ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString());
             }
             customerRepository.deleteById(id);
             log.info("Customer deleted");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ResultBuilder.success(Constants.CUSTOMER_DELETED.getValue()));
+            return ResultBuilder.success(Constants.CUSTOMER_DELETED.getValue());
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResultBuilder.failure(e.getMessage()));
+            return ResultBuilder.failure(e.getMessage());
         }
     }
 
     @Override
-    public ResponseEntity<ResultDTO> getByCustomerId(String id) {
+    public ResultDTO getByCustomerId(String id) {
         try {
             Optional<Customer> customer = customerRepository.findById(id);
             if (customer.isEmpty()) {
                 log.info("Customer not found id {}", id);
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString()));
+                return ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString());
             }
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ResultBuilder.success(Constants.CUSTOMER_FETCH_SUCCESSFULLY.getValue(), toCustomerResponse(customer.get())));
+            return ResultBuilder.success(Constants.CUSTOMER_FETCH_SUCCESSFULLY.getValue(), toCustomerResponse(customer.get()));
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResultBuilder.failure(e.getMessage()));
+            return ResultBuilder.failure(e.getMessage());
         }
     }
 
     @Override
-    public ResponseEntity<ResultDTO> getAll() {
+    public ResultDTO getAll() {
         try {
             List<Customer> list = customerRepository.findAll();
             if (list.isEmpty()) {
                 log.info("Customer list is empty");
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString()));
+                return ResultBuilder.failure(Constants.CUSTOMER_NOT_FOUND.toString());
             }
             List<CustomerResponse> customerReponseList = list.stream().map(CustomerServiceImp::toCustomerResponse).toList();
 
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ResultBuilder.success(Constants.FETCH_ALL_CUSTOMERS_SUCCESSFULLY.getValue(), customerReponseList));
+            return ResultBuilder.success(Constants.FETCH_ALL_CUSTOMERS_SUCCESSFULLY.getValue(), customerReponseList);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResultBuilder.failure(e.getMessage()));
+            return ResultBuilder.failure(e.getMessage());
         }
     }
 }

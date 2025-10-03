@@ -3,6 +3,7 @@ package com.pm.ecommerce.service.impl;
 import com.pm.ecommerce.common.Constants;
 import com.pm.ecommerce.common.dto.ResultDTO;
 import com.pm.ecommerce.common.utils.ResultBuilder;
+import com.pm.ecommerce.dto.ProductPurchaseRequest;
 import com.pm.ecommerce.dto.ProductRequest;
 import com.pm.ecommerce.exception.CategoryNotFoundException;
 import com.pm.ecommerce.model.Category;
@@ -14,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -53,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ResponseEntity<ResultDTO> create(ProductRequest productRequest) {
+    public ResultDTO create(ProductRequest productRequest) {
 
         // check duplication
         boolean exists = productRepository.existsByName(productRequest.getName());
@@ -65,5 +69,20 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(toProduct(productRequest));
         return ResultBuilder.success(Constants.PRODUCT_CREATED_SUCCESSFULLY);
+    }
+
+    @Override
+    public ResultDTO purchaseProducts(List<ProductPurchaseRequest> ProductPurchaseRequest) {
+        return null;
+    }
+
+    @Override
+    public ResultDTO findById(String productId) {
+        Optional<Product> product= productRepository.findById(productId);
+//        return ResultDTO.builder().build();
+        if (product.isPresent()) {
+            return ResultDTO.builder().status("true").message("data available").data(product).build();
+        }
+        return ResultDTO.builder().status("false").message("data not available").data(null).build();
     }
 }

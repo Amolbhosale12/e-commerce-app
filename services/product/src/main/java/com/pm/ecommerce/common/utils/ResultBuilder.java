@@ -7,45 +7,41 @@ import org.springframework.http.ResponseEntity;
 public class ResultBuilder {
 
 
-    public static ResponseEntity<ResultDTO> success(String message) {
+    public static ResultDTO success(String message) {
 
-        ResultDTO resultDTO = ResultDTO
+        return ResultDTO
                 .builder()
                 .message(message)
                 .status("true")
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultDTO);
     }
 
-    public static ResponseEntity<ResultDTO> success(String message, Object data) {
+    public static ResultDTO success(String message, Object data) {
 
-        ResultDTO resultDTO = ResultDTO
+        return ResultDTO
                 .builder()
                 .message(message)
                 .data(data)
                 .status("true")
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resultDTO);
     }
 
-    public static ResponseEntity<ResultDTO> error(String message) {
+    public static ResultDTO error(String message) {
 
-        ResultDTO resultDTO = ResultDTO
+        return ResultDTO
                 .builder()
                 .message(message)
                 .status("false")
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDTO);
     }
 
-    public static ResponseEntity<ResultDTO> error(String message, Object data) {
+    public static ResultDTO error(String message, Object data) {
 
-        ResultDTO resultDTO = ResultDTO
+        return ResultDTO
                 .builder()
                 .message(message)
                 .data(data)
                 .status("false")
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDTO);
     }
 }

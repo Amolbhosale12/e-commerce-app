@@ -22,27 +22,27 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<ResultDTO> create(@Valid @RequestBody CustomerRequest customerRequest) {
-        return customerService.create(customerRequest);
+        return ResponseEntity.ok(customerService.create(customerRequest));
     }
 
     @PutMapping
     public ResponseEntity<ResultDTO> update(@Valid @RequestBody CustomerRequest customerRequest, String id) {
-        return customerService.update(id, customerRequest);
+        return ResponseEntity.ok(customerService.update(id, customerRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResultDTO> delete(@PathVariable(name = "id") String id) {
-        return customerService.delete(id);
+        return ResponseEntity.ok(customerService.delete(id));
     }
 
     @GetMapping
     public ResponseEntity<ResultDTO> getAll() {
-        return customerService.getAll();
+        return ResponseEntity.ok(customerService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResultDTO> getById(@PathVariable(name = "id") String id) {
-        return customerService.getByCustomerId(id);
+        return ResponseEntity.ok(customerService.getByCustomerId(id));
     }
 
 }

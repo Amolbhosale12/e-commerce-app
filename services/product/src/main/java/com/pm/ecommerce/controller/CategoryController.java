@@ -21,27 +21,26 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<ResultDTO> create(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.create(categoryRequest);
+        return ResponseEntity.ok(categoryService.create(categoryRequest));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResultDTO> get(@PathVariable String id) {
-        return categoryService.getById(id);
+        return ResponseEntity.ok(categoryService.getById(id));
     }
+
     @GetMapping
     public ResponseEntity<ResultDTO> getAll(){
-        return categoryService.getAll();
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResultDTO> update(@PathVariable String id, @Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.update(id, categoryRequest);
+        return ResponseEntity.ok(categoryService.update(id, categoryRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResultDTO> delete(@PathVariable String id) {
-        return categoryService.delete(id);
+        return ResponseEntity.ok(categoryService.delete(id));
     }
-
-
 }

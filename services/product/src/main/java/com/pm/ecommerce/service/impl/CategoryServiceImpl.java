@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public ResponseEntity<ResultDTO> create(CategoryRequest categoryRequest) {
+    public ResultDTO create(CategoryRequest categoryRequest) {
 
         // check duplication
         if (categoryRepository.existsByName(categoryRequest.getName())) {
@@ -61,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public ResponseEntity<ResultDTO> update(String id, CategoryRequest categoryRequest) {
+    public ResultDTO update(String id, CategoryRequest categoryRequest) {
 
         Category category = categoryRepository
                 .findById(id)
@@ -83,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public ResponseEntity<ResultDTO> delete(String id) {
+    public ResultDTO delete(String id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(Constants.CATEGORY_NOT_FOUND));
         categoryRepository.delete(category);
         log.info("Category deleted successfully against :: {}", category.getId());
@@ -91,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<ResultDTO> getAll() {
+    public ResultDTO getAll() {
 
         List<Category> list = categoryRepository.findAll();
         if (list.isEmpty()) {
@@ -106,7 +105,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<ResultDTO> getById(String id) {
+    public ResultDTO getById(String id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(Constants.CATEGORY_NOT_FOUND));
         log.info("Category with id {} found", id);
         return ResultBuilder.success(HttpStatus.OK.toString(), toCategoryResponse(category));

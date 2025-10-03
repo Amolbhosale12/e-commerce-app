@@ -18,11 +18,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-
     private String name;
-
     private String description;
-
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Product> products;
 }

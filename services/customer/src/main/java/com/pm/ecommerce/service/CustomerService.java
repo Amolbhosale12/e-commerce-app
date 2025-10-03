@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CustomerService {
-    ResponseEntity<ResultDTO> create(CustomerRequest customerRequest);
+    ResultDTO create(CustomerRequest customerRequest);
 
-    ResponseEntity<ResultDTO> update(String id, CustomerRequest customerRequest);
+    ResultDTO update(String id, CustomerRequest customerRequest);
 
-    ResponseEntity<ResultDTO> delete(String id);
+    ResultDTO delete(String id);
 
-    ResponseEntity<ResultDTO> getByCustomerId(String id);
+    ResultDTO getByCustomerId(String id);
 
-    ResponseEntity<ResultDTO> getAll();
+    ResultDTO getAll();
 }
